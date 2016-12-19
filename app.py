@@ -11,6 +11,8 @@ Usage:
     amity print_allocations [--output=<filename>]
     amity print_unallocated [--output=<filename>]
     amity print_room <roomname>
+    amity save_state [--db=<sqlite_database>]
+    amity load_state <db_name>
     amity (-i | --interactive)
     amity (-h | --help | --version)
 
