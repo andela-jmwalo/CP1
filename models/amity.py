@@ -2,6 +2,7 @@ from models.rooms import Office, LivingSpace
 from models.person import Staff, Fellow
 import random
 import sqlite3
+from termcolor import *
 
 
 class Amity(object):
@@ -18,26 +19,23 @@ class Amity(object):
     staff = []
     fellow = []
     room_data = {}
-
     all_fellows = 0
     all_staff = 0
 
-    """This method adds a new room given the room name and the type."""
-
     def create_room(self, room_type, rooms):
+        """This method adds a new room given the room name(s) and the type."""
         for room_name in rooms:
             if room_name in Amity.all_rooms:
-                print ('Room already exists')
+                cprint('Room already exists', 'yellow')
             else:
                 if room_type == 'LIVINGSPACE':
                     new_room = LivingSpace(room_name)
                     Amity.all_rooms.append(room_name)
                     Amity.livingspace.append(room_name)
-
                     Amity.room_data[room_name] = [
                         room_name, room_type, new_room.capacity]
                     Amity.livingspace_allocations[room_name] = []
-                    print(room_name + ' ' + 'created successfully!')
+                    cprint(room_name + ' ' + 'created successfully!', 'yellow')
                 elif room_type == 'OFFICE':
                     new_room = Office(room_name)
                     Amity.all_rooms.append(room_name)
@@ -45,7 +43,7 @@ class Amity(object):
                     Amity.room_data[room_name] = [
                         room_name, room_type, new_room.capacity]
                     Amity.office_allocations[room_name] = []
-                    print(room_name + ' ' + 'created successfully!')
+                    cprint(room_name + ' ' + 'created successfully!', 'yellow')
 
     @staticmethod
     def add_person(person_name, job_type, wants_accomodation):
@@ -54,22 +52,24 @@ class Amity(object):
             new_person = Fellow(person_name)
             person_id = 'F' + str(len(Amity.fellow) + 1)
             Amity.fellow.append(person_name)
+            Amity.all_person.append(person_name)
             if wants_accomodation == 'YES':
-                Amity.allocate_office(person_name)
-                Amity.allocate_livingspace(person_name)
-
+                p_office = Amity.allocate_office(person_name)
+                p_living = Amity.allocate_livingspace(person_name)
             elif wants_accomodation == 'NO':
                 Amity.allocate_office(person_name)
-
         elif job_type == 'STAFF':
             new_person = Staff(person_name)
             person_id = 'S' + str(len(Amity.staff) + 1)
             Amity.allocate_office(person_name)
             Amity.staff.append(person_name)
+            Amity.all_person.append(person_name)
+        else:
+            return('Invalid Job Type')
 
         Amity.person_data[person_id] = [
             new_person.person_name, new_person.job_type, wants_accomodation]
-        Amity.all_person.append(person_name)
+        print(Amity.person_data)
 
     def allocate_office(person_name):
         vacant_offices = [room for room in Amity.office if len(
@@ -77,7 +77,9 @@ class Amity(object):
         if vacant_offices:
             random_office = random.choice(vacant_offices)
             Amity.office_allocations[random_office].append(person_name)
+            return personrandom_office
         else:
+            return('There are no Vacant Offices at the moment!')
             Amity.unallocated_office.append(person_name)
 
     def allocate_livingspace(person_name):
@@ -87,7 +89,9 @@ class Amity(object):
             random_livingspace = random.choice(vacant_livingspace)
             Amity.livingspace_allocations[
                 random_livingspace].append(person_name)
+            return random_livingspace
         else:
+            cprint('There are no vacant livingspaces at the moment!', 'yellow')
             Amity.unallocated_livingspace.append(person_name)
 
     @staticmethod
@@ -101,7 +105,9 @@ class Amity(object):
             if room_type == 'OFFICE':
                 office_occupants = len(Amity.office_allocations[room_name])
                 if office_occupants == room_capacity:
-                    print (room_name + " " + "is currently full")
+                    cprint(room_name + " " + "is currently full", 'yellow')
+                elif person_name in Amity.office_allocations[room_name]:
+                    cprint(person_name + ' is already in' + room_name, 'yellow')
                 else:
                     for room in Amity.office_allocations:
                         if person_name in Amity.office_allocations[room]:
@@ -112,7 +118,9 @@ class Amity(object):
                 living_occupants = len(
                     Amity.livingspace_allocations[room_name])
                 if living_occupants == room_capacity:
-                    print (room_name + " " + "is currently full")
+                    cprint(room_name + " " + "is currently full", 'yellow')
+                elif person_name in Amity.livingspace_allocations[room_name]:
+                    cprint(person_name + ' is already in' + room_name, 'yellow')
                 else:
                     for room in Amity.livingspace_allocations:
                         if person_name in Amity.livingspace_allocations[room]:
@@ -163,17 +171,16 @@ class Amity(object):
             file.close()
 
         else:
+            cprint('LIVINGSPACE ALLOCATIONS', 'yellow')
             for room_name in Amity.livingspace_allocations:
-                print('LIVINGSPACE ALLOCATIONS')
                 living_occupants = Amity.livingspace_allocations[room_name]
-                print (room_name)
+                cprint(room_name, 'magenta')
                 print ('-' * 50)
                 print (', '.join(living_occupants))
-
+            cprint('OFFICE ALLOCATIONS', 'yellow')
             for room_name in Amity.office_allocations:
-                print('OFFICE ALLOCATIONS')
                 office_occupants = Amity.office_allocations[room_name]
-                print (room_name)
+                cprint(room_name, 'magenta')
                 print ('-' * 50)
                 print (', '.join(office_occupants))
 

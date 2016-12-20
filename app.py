@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 """
-This example uses docopt with the built in cmd module to demonstrate an
-interactive command application.
 
 Usage:
-    amity create_room (LivingSpace | Office) (<room_name>)...
-    amity add_person <first_name> <last_name> (FELLOW | STAFF) [--wants_accomodation=N]
+    amity create_room (livingspace | office) (<room_name>)...
+    amity add_person <first_name> <last_name> (fellow | staff)
     amity reallocate_person <person_id> <room_name> (LivingSpace | Office)
     amity load_people <filename>
     amity print_allocations [--output=<filename>]
@@ -27,7 +25,8 @@ from models.amity import Amity
 from docopt import docopt, DocoptExit
 import colorama
 from termcolor import *
-import pyfiglet
+from pyfiglet import *
+
 
 def docopt_cmd(func):
     """
@@ -61,10 +60,20 @@ def docopt_cmd(func):
     return fn
 
 
-class MyInteractive (cmd.Cmd):
-    intro = 'Welcome to my interactive program!' \
-        + ' (type help for a list of commands.)'
-    prompt = 'Amity>>>  '
+def intro():
+    cprint(figlet_format('AMITY', font='isometric1'),
+           'magenta')
+    cprint('*' * 60, 'white')
+    cprint("    AMITY ROOM ALLOCATION SYSTEM.    ", 'magenta')
+    cprint('*' * 60, 'white')
+    cprint(" Below is a list of available commands.", 'magenta')
+    cprint('*' * 60, 'white')
+    cprint(__doc__, 'magenta')
+
+
+class Allocator (cmd.Cmd):
+
+    prompt = colored('Amity>>> ', 'magenta')
     file = None
 
     @docopt_cmd
@@ -171,6 +180,9 @@ class MyInteractive (cmd.Cmd):
 
 opt = docopt(__doc__, sys.argv[1:])
 if opt['--interactive']:
-    MyInteractive().cmdloop()
+    os.system('clear')
+    intro()
+    Allocator().cmdloop()
+
 
 print(opt)
