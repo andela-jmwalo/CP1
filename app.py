@@ -20,12 +20,13 @@ Options:
 """
 
 import sys
+import os
 import cmd
 from models.amity import Amity
 from docopt import docopt, DocoptExit
 import colorama
-from termcolor import *
-from pyfiglet import *
+from termcolor import cprint, colored
+from pyfiglet import figlet_format
 
 
 def docopt_cmd(func):
@@ -159,17 +160,24 @@ class Allocator (cmd.Cmd):
 
     @docopt_cmd
     def do_save_state(self, args):
-        """Usage: save_state [--db=<sqlite_database>]"""
+        """
+         Usage: save_state [--db=<db_name>]
 
-        db_name = args['--db']
-
+         Options:
+         -d, --dbname=<db_name>  Output to file
+         """
+        if args['--dbname']:
+                db_name = args['--dbname']
+        else:
+                db_name = 'amity.db'
+                
         Amity.save_state(db_name)
 
     @docopt_cmd
     def do_load_state(self, args):
         """Usage: load_state <db_name>"""
         db_name = args['<db_name>']
-        Amity.load_state(db_name)
+        print(Amity.load_state(db_name))
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
