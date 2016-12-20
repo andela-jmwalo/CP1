@@ -1,8 +1,9 @@
 from models.rooms import Office, LivingSpace
 from models.person import Staff, Fellow
 import random
+import os
 import sqlite3
-from termcolor import *
+from termcolor import cprint, colored
 
 
 class Amity(object):
@@ -70,6 +71,8 @@ class Amity(object):
         Amity.person_data[person_id] = [
             new_person.person_name, new_person.job_type, wants_accomodation]
         print(Amity.person_data)
+        print (Amity.livingspace_allocations)
+        print (Amity.office_allocations)
 
     def allocate_office(person_name):
         vacant_offices = [room for room in Amity.office if len(
@@ -77,7 +80,7 @@ class Amity(object):
         if vacant_offices:
             random_office = random.choice(vacant_offices)
             Amity.office_allocations[random_office].append(person_name)
-            return personrandom_office
+            return random_office
         else:
             return('There are no Vacant Offices at the moment!')
             Amity.unallocated_office.append(person_name)
@@ -114,6 +117,7 @@ class Amity(object):
                             Amity.office_allocations[
                                 room].remove(person_name)
                     Amity.office_allocations[room_name].append(person_name)
+                print (Amity.office_allocations)
             if room_type == 'LIVINGSPACE':
                 living_occupants = len(
                     Amity.livingspace_allocations[room_name])
@@ -128,6 +132,7 @@ class Amity(object):
                                 room].remove(person_name)
                     Amity.livingspace_allocations[
                         room_name].append(person_name)
+                print(Amity.livingspace_allocations)
         return ('Reallocation was Succesfull!')
 
     @staticmethod
@@ -269,9 +274,12 @@ class Amity(object):
         for row in cursor.execute('SELECT * FROM ROOMS'):
             Amity.room_data[row[0]] = [row[0], row[1], row[2]]
             if row[1] == 'LIVINGSPACE':
-                Amity.livingspace_allocations[row[0]] = row[3].split()
+                Amity.livingspace_allocations[row[0]] = row[3].split(', ')
             elif row[1] == 'OFFICE':
-                Amity.office_allocations[row[0]] = row[3].split()
+                Amity.office_allocations[row[0]] = row[3].split(', ')
         for row in cursor.execute('SELECT * FROM PERSON'):
             Amity.person_data[row[0]] = [row[1], row[2], row[3]]
+        print (Amity.livingspace_allocations)
+        print (Amity.office_allocations)
+        print (Amity.person_data)
         return('Data has been loaded into the system successfully')
