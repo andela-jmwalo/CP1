@@ -82,9 +82,8 @@ class Amity(object):
             Amity.office_allocations[random_office].append(person_name)
             return random_office
         else:
-            return('There are no Vacant Offices at the moment!')
             Amity.unallocated_office.append(person_name)
-
+            return('There are no Vacant Offices at the moment!')
     def allocate_livingspace(person_name):
         vacant_livingspace = [room for room in Amity.livingspace if len(
             Amity.livingspace_allocations[room]) < Amity.room_data[room][2]]
@@ -94,8 +93,8 @@ class Amity(object):
                 random_livingspace].append(person_name)
             return random_livingspace
         else:
-            cprint('There are no vacant livingspaces at the moment!', 'yellow')
             Amity.unallocated_livingspace.append(person_name)
+            cprint('There are no vacant livingspaces at the moment!', 'yellow')
 
     @staticmethod
     def reallocate_person(person_id, room_name, room_type):

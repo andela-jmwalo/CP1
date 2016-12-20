@@ -114,13 +114,14 @@ class Allocator (cmd.Cmd):
             room_type = "LIVINGSPACE"
         else:
             room_type = "OFFICE"
-        Amity().reallocate_person(person_id, room_name, room_type)
+        cprint(Amity().reallocate_person(
+            person_id, room_name, room_type), 'yellow')
 
     @docopt_cmd
     def do_load_people(self, args):
         """Usage: load_people <filename>"""
         filename = args['<filename>']
-        Amity.load_people(filename)
+        cprint(Amity.load_people(filename), 'yellow')
 
     @docopt_cmd
     def do_print_allocations(self, args):
@@ -167,17 +168,17 @@ class Allocator (cmd.Cmd):
          -d, --dbname=<db_name>  Output to file
          """
         if args['--dbname']:
-                db_name = args['--dbname']
+            db_name = args['--dbname']
         else:
-                db_name = 'amity.db'
-                
-        Amity.save_state(db_name)
+            db_name = 'amity.db'
+
+        cprint(Amity.save_state(db_name), 'yellow')
 
     @docopt_cmd
     def do_load_state(self, args):
         """Usage: load_state <db_name>"""
         db_name = args['<db_name>']
-        print(Amity.load_state(db_name))
+        cprint(Amity.load_state(db_name), 'yellow')
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
