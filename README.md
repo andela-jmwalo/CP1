@@ -2,6 +2,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c9c034ff32874e4e814db5d5bc571403)](https://www.codacy.com/app/judith-achieng/CP1?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=andela-jmwalo/CP1&amp;utm_campaign=Badge_Grade)
 [![Code Health](https://landscape.io/github/andela-jmwalo/CP1/develop/landscape.svg?style=flat)](https://landscape.io/github/andela-jmwalo/CP1/develop)
 [![Issue Count](https://codeclimate.com/github/andela-jmwalo/CP1/badges/issue_count.svg)](https://codeclimate.com/github/andela-jmwalo/CP1)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/c9c034ff32874e4e814db5d5bc571403)](https://www.codacy.com/app/judith-achieng/CP1?utm_source=github.com&utm_medium=referral&utm_content=andela-jmwalo/CP1&utm_campaign=Badge_Coverage)
 
 # AMITY - Room Allocation System
 AMITY is a room allocation system for one of Andela’s facilities.
