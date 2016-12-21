@@ -1,10 +1,15 @@
+[![Build Status](https://travis-ci.org/andela-jmwalo/CP1.svg?branch=develop)](https://travis-ci.org/andela-jmwalo/CP1)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c9c034ff32874e4e814db5d5bc571403)](https://www.codacy.com/app/judith-achieng/CP1?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=andela-jmwalo/CP1&amp;utm_campaign=Badge_Grade)
+[![Code Health](https://landscape.io/github/andela-jmwalo/CP1/develop/landscape.svg?style=flat)](https://landscape.io/github/andela-jmwalo/CP1/develop)
+[![Issue Count](https://codeclimate.com/github/andela-jmwalo/CP1/badges/issue_count.svg)](https://codeclimate.com/github/andela-jmwalo/CP1)
+
 # AMITY - Room Allocation System
 AMITY is a room allocation system for one of Andela’s facilities.
 ![screenshot](https://github.com/andela-jmwalo/CP1/blob/develop/screenshot.png)
 ### Installation
 Clone this repo from Github to your local machine:
 ```
-git clone https://github.com/andela-gochieng/checkpoint-1
+git clone https://github.com/andela-jmwalo/CP1
 ```
 cd into the CP1 folder
 ```
@@ -35,10 +40,3 @@ To run the tests
 ```
 pytest
 ```
-
-[![Coverage Status](https://coveralls.io/repos/github/andela-jmwalo/CP1/badge.svg?branch=develop)](https://coveralls.io/github/andela-jmwalo/CP1?branch=develop)
-[![Code Climate](https://codeclimate.com/github/andela-jmwalo/CP1/badges/gpa.svg)](https://codeclimate.com/github/andela-jmwalo/CP1)
-[![Build Status](https://travis-ci.org/andela-jmwalo/CP1.svg?branch=develop)](https://travis-ci.org/andela-jmwalo/CP1)
-[![Code Health](https://landscape.io/github/andela-jmwalo/CP1/develop/landscape.svg?style=flat)](https://landscape.io/github/andela-jmwalo/CP1/develop)
-[![Test Coverage](https://codeclimate.com/github/andela-jmwalo/CP1/badges/coverage.svg)](https://codeclimate.com/github/andela-jmwalo/CP1/coverage)
-[![Issue Count](https://codeclimate.com/github/andela-jmwalo/CP1/badges/issue_count.svg)](https://codeclimate.com/github/andela-jmwalo/CP1)
