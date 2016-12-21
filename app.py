@@ -4,7 +4,7 @@
 Usage:
     amity create_room (livingspace | office) (<room_name>)...
     amity add_person <first_name> <last_name> (fellow | staff)
-    amity reallocate_person <person_id> <room_name> (LivingSpace | Office)
+    amity reallocate_person <id> <room_name> (Living | Office)
     amity load_people <filename>
     amity print_allocations [--output=<filename>]
     amity print_unallocated [--output=<filename>]
@@ -24,7 +24,6 @@ import os
 import cmd
 from models.amity import Amity
 from docopt import docopt, DocoptExit
-import colorama
 from termcolor import cprint, colored
 from pyfiglet import figlet_format
 
@@ -103,7 +102,8 @@ class Allocator (cmd.Cmd):
                 wants_accomodation = 'YES'
             else:
                 wants_accomodation = 'NO'
-        Amity().add_person(person_name, job_type, wants_accomodation)
+        Amity().add_person(person_name,
+                                  job_type, wants_accomodation)
 
     @docopt_cmd
     def do_reallocate_person(self, args):
@@ -165,10 +165,11 @@ class Allocator (cmd.Cmd):
          Usage: save_state [--db=<db_name>]
 
          Options:
-         -d, --dbname=<db_name>  Output to file
+         -db, --dbname=<db_name>  Output to file
          """
-        if args['--dbname']:
-            db_name = args['--dbname']
+
+        if args['--db']:
+            db_name = args['--db']
         else:
             db_name = 'amity.db'
 

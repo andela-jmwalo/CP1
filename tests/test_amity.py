@@ -8,14 +8,23 @@ class Amity_Test(unittest.TestCase):
     def setUp(self):
         self.Amity = Amity()
 
-    def test_create_room(self):
-        original_number_of_rooms = len(Amity.all_rooms)
+    def test_create_livingspace(self):
+        original_number_of_living = len(Amity.livingspace)
 
         self.Amity.create_room('LIVINGSPACE', ['SCALA', 'RUBY'])
 
-        new_number_of_rooms = len(Amity.all_rooms)
+        new_number_of_living = len(Amity.livingspace)
 
-        self.assertEqual(new_number_of_rooms, original_number_of_rooms + 2)
+        self.assertEqual(new_number_of_living, original_number_of_living + 2)
+
+    def test_create_office(self):
+        original_number_of_office = len(Amity.office)
+
+        self.Amity.create_room('OFFICE', ['PURPLE', 'ORANGE'])
+
+        new_number_of_office = len(Amity.office)
+
+        self.assertEqual(new_number_of_office, original_number_of_office + 2)
 
     def test_add_person(self):
         current_number_of_people = len(Amity.all_person)
@@ -26,7 +35,7 @@ class Amity_Test(unittest.TestCase):
     def test_reallocate_person(self):
 
         message = self.Amity.reallocate_person('F1', 'RUBY', 'LIVINGSPACE')
-
+        print(Amity.livingspace_allocations['RUBY'])
         self.assertEqual(message, 'Reallocation was Succesfull!')
 
     def test_load_people(self):
@@ -48,8 +57,8 @@ class Amity_Test(unittest.TestCase):
 
     def test_save_state(self):
         self.assertEqual(self.Amity.save_state(
-            'test.db'), 'Data saved successfully')
+            'fix.db'), 'Data saved successfully')
 
     def test_load_state(self):
         self.assertEqual(self.Amity.load_state(
-            'test.db'), 'Data has been loaded into the system successfully')
+            'amity.db'), 'Data has been loaded into the system successfully')

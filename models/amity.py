@@ -27,7 +27,7 @@ class Amity(object):
         """This method adds a new room given the room name(s) and the type."""
         for room_name in rooms:
             if room_name in Amity.all_rooms:
-                cprint('Room already exists', 'yellow')
+                return('Room already exists')
             else:
                 if room_type == 'LIVINGSPACE':
                     new_room = LivingSpace(room_name)
@@ -36,7 +36,7 @@ class Amity(object):
                     Amity.room_data[room_name] = [
                         room_name, room_type, new_room.capacity]
                     Amity.livingspace_allocations[room_name] = []
-                    cprint(room_name + ' ' + 'created successfully!', 'yellow')
+                    cprint(room_name + ' ' + 'created successfully!','yellow')
                 elif room_type == 'OFFICE':
                     new_room = Office(room_name)
                     Amity.all_rooms.append(room_name)
@@ -50,7 +50,7 @@ class Amity(object):
     def add_person(person_name, job_type, wants_accomodation):
         """This method adds a new person to the system. """
         if person_name.replace(' ', '').isalpha() is False:
-            cprint('Invalid person name!', 'yellow')
+            return('Invalid person name!')
         else:
             if job_type == 'FELLOW':
                 new_person = Fellow(person_name)
@@ -65,7 +65,7 @@ class Amity(object):
                     cprint('Office allocated: ' + p_office, 'yellow')
                     cprint('Livingspace allocated: ' + p_living, 'yellow')
                 elif wants_accomodation == 'NO':
-                    Amity.allocate_office(person_name)
+                    p_office = Amity.allocate_office(person_name)
                     cprint('Office allocated: ' + p_office, 'yellow')
             elif job_type == 'STAFF':
                 new_person = Staff(person_name)
@@ -73,17 +73,13 @@ class Amity(object):
                 cprint('Staff ' + person_name +
                        ' added succesfully with ID: ' + person_id, 'yellow')
                 p_office = Amity.allocate_office(person_name)
-                cprint('Office allocated: ' + p_office, 'yellow')
                 Amity.staff.append(person_name)
                 Amity.all_person.append(person_name)
+                cprint('Office allocated: ' + p_office, 'yellow')
             else:
-                return('Invalid Job Type')
-
+                cprint('Invalid Job Type', 'yellow')
             Amity.person_data[person_id] = [
                 new_person.person_name, new_person.job_type, wants_accomodation]
-        print(Amity.person_data)
-        print (Amity.livingspace_allocations)
-        print (Amity.office_allocations)
 
     def allocate_office(person_name):
         vacant_offices = [room for room in Amity.office if len(
@@ -112,6 +108,7 @@ class Amity(object):
     def reallocate_person(person_id, room_name, room_type):
         '''This method Reallocates a person to another room.
         It reallocates the person given the person Id'''
+
         person_name = Amity.person_data[person_id][0]
         room_capacity = Amity.room_data[room_name][2]
         if person_id not in Amity.person_data:
@@ -121,24 +118,28 @@ class Amity(object):
         else:
             if room_type == 'OFFICE':
                 office_occupants = len(Amity.office_allocations[room_name])
-                if office_occupants == room_capacity:
-                    cprint(room_name + " " + "is currently full", 'yellow')
+                if person_name not in Amity.office_allocations:
+                    return(person_name + ' not in any office')
+                elif office_occupants == room_capacity:
+                    return(room_name + " " + "is currently full")
                 elif person_name in Amity.office_allocations[room_name]:
-                    cprint(person_name + ' is already in' + room_name, 'yellow')
+                    return (person_name + ' is already in' + room_name)
                 else:
                     for room in Amity.office_allocations:
                         if person_name in Amity.office_allocations[room]:
                             Amity.office_allocations[
                                 room].remove(person_name)
                     Amity.office_allocations[room_name].append(person_name)
-                print (Amity.office_allocations)
+
             if room_type == 'LIVINGSPACE':
                 living_occupants = len(
                     Amity.livingspace_allocations[room_name])
-                if living_occupants == room_capacity:
-                    cprint(room_name + " " + "is currently full", 'yellow')
+                if room_capacity == living_occupants:
+                    return(room_name + " " + "is currently full")
                 elif person_name in Amity.livingspace_allocations[room_name]:
-                    cprint(person_name + ' is already in' + room_name, 'yellow')
+                    return(person_name + ' is already in' + room_name)
+                elif Amity.person_data[person_id][1] == 'STAFF':
+                    return('Staff cannot be reallocated to Livingspace')
                 else:
                     for room in Amity.livingspace_allocations:
                         if person_name in Amity.livingspace_allocations[room]:
@@ -146,7 +147,6 @@ class Amity(object):
                                 room].remove(person_name)
                     Amity.livingspace_allocations[
                         room_name].append(person_name)
-                print(Amity.livingspace_allocations)
         cprint(person_name + ' has been reallocated to ' + room_name, 'yellow')
         return ('Reallocation was Succesfull!')
 
@@ -217,27 +217,27 @@ class Amity(object):
                 file.write("%s\n" % person)
             file.close
         else:
-            print('UNALLOCATED LIVINGSPACE')
-            print (', '.join(Amity.unallocated_livingspace))
-            print('UNALLOCATED OFFICE')
-            print (', '.join(Amity.unallocated_office))
+            cprint('UNALLOCATED LIVINGSPACE', 'magenta')
+            cprint(', '.join(Amity.unallocated_livingspace), 'white')
+            cprint('UNALLOCATED OFFICE', 'magenta')
+            cprint(', '.join(Amity.unallocated_office), 'white')
 
     @staticmethod
     def print_room(room_name):
         if room_name not in Amity.room_data:
-            print('The room does not exist')
+            cprint('The room does not exist', 'yellow')
         elif room_name in Amity.room_data:
             if Amity.room_data[room_name][1].upper() == 'LIVINGSPACE':
                 living_occupants = Amity.livingspace_allocations[room_name]
-                print (room_name)
-                print ('-' * 30)
-                print (', '.join(living_occupants))
+                cprint(room_name, 'magenta')
+                cprint('-' * 30, 'magenta')
+                cprint(', '.join(living_occupants), 'white')
 
             else:
                 office_occupants = Amity.office_allocations[room_name]
-                print (room_name)
-                print ('-' * 30)
-                print (', '.join(office_occupants))
+                cprint(room_name, 'magenta')
+                cprint('-' * 30, 'magenta')
+                cprint(', '.join(office_occupants), 'white')
         return('Room printed Successfully!')
 
     @staticmethod

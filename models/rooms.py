@@ -8,14 +8,16 @@ class Room(object):
 
 
 class Office(Room):
-    """This class LivingSpace inherits from Room class . It has a capacity of 6"""
+    """This class LivingSpace inherits from Room class .
+    It has a capacity of 6"""
 
     def __init__(self, room_name, room_type='OFFICE'):
         super(Office, self).__init__(room_name, 'OFFICE', 6)
 
 
 class LivingSpace(Room):
-    """This class LivingSpace inherits from Room class. It has a capacity of 4."""
+    """This class LivingSpace inherits from Room class.
+    It has a capacity of 4."""
 
     def __init__(self, room_name, room_type='	LIVINGSPACE', capacity=4):
         super(LivingSpace, self).__init__(room_name, 'LIVINGSPACE', 4)
