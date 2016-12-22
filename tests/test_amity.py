@@ -10,9 +10,9 @@ class Amity_Test(unittest.TestCase):
 
     def test_create_livingspace(self):
         original_number_of_living = len(Amity.livingspace)
-        self.Amity.create_room('LIVINGSPACE', ['SCALA', 'RUBY'])
+        self.Amity.create_room('LIVINGSPACE', ['SCALA', 'RUBY','PHP'])
         new_number_of_living = len(Amity.livingspace)
-        self.assertEqual(new_number_of_living, original_number_of_living + 2)
+        self.assertEqual(new_number_of_living, original_number_of_living + 3)
 
     def test_create_office(self):
 
@@ -29,7 +29,7 @@ class Amity_Test(unittest.TestCase):
 
     def test_reallocate_person(self):
 
-        message = self.Amity.reallocate_person('F1', 'RUBY', 'LIVINGSPACE')
+        message = self.Amity.reallocate_person('F1', 'PHP', 'LIVINGSPACE')
         print(Amity.livingspace_allocations['RUBY'])
         self.assertEqual(message, 'Reallocation was Succesfull!')
 
