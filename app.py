@@ -3,7 +3,7 @@
 
 Usage:
     amity create_room (livingspace | office) (<room_name>)...
-    amity add_person <first_name> <last_name> (fellow | staff)
+    amity add_person <first_name> <last_name> (fellow | staff) [--wants_accomodation=N]
     amity reallocate_person <id> <room_name> (Living | Office)
     amity load_people <filename>
     amity print_allocations [--output=<filename>]
@@ -90,20 +90,30 @@ class Allocator (cmd.Cmd):
 
     @docopt_cmd
     def do_add_person(self, args):
-        """Usage: add_person <first_name> <last_name> (fellow| staff)"""
+        """
+        Usage:
+            add_person <first_name> <last_name> (fellow | staff) [--wants_accomodation=N]
+
+        Options:
+        -w, --wants_accomodation=<N>  Wants accomodation [default: N]
+        """
+
+        print(args)
+
         person_name = args["<first_name>"].upper(
         ) + " " + args["<last_name>"].upper()
         job_type = 'FELLOW' if args['fellow'] else 'STAFF'
         if job_type == 'STAFF':
             wants_accomodation = 'NO'
         else:
-            answer = input("Require accomodation?Y for Yes and N for No:")
-            if answer.upper() == "Y":
+            if args['--wants_accomodation'].upper() == "Y":
                 wants_accomodation = 'YES'
-            else:
+            elif args['--wants_accomodation'].upper() == 'N':
                 wants_accomodation = 'NO'
+            else:
+                cprint('Please enter Y or N for accomodation', 'yellow')
         Amity().add_person(person_name,
-                                  job_type, wants_accomodation)
+                           job_type, wants_accomodation)
 
     @docopt_cmd
     def do_reallocate_person(self, args):
@@ -165,7 +175,7 @@ class Allocator (cmd.Cmd):
          Usage: save_state [--db=<db_name>]
 
          Options:
-         -db, --dbname=<db_name>  Output to file
+         -db, --dbname=<db_name>  Save to database
          """
 
         if args['--db']:

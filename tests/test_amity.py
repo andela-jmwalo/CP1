@@ -10,20 +10,15 @@ class Amity_Test(unittest.TestCase):
 
     def test_create_livingspace(self):
         original_number_of_living = len(Amity.livingspace)
-
         self.Amity.create_room('LIVINGSPACE', ['SCALA', 'RUBY'])
-
         new_number_of_living = len(Amity.livingspace)
-
         self.assertEqual(new_number_of_living, original_number_of_living + 2)
 
     def test_create_office(self):
+
         original_number_of_office = len(Amity.office)
-
         self.Amity.create_room('OFFICE', ['PURPLE', 'ORANGE'])
-
         new_number_of_office = len(Amity.office)
-
         self.assertEqual(new_number_of_office, original_number_of_office + 2)
 
     def test_add_person(self):

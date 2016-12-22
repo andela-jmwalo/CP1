@@ -36,7 +36,7 @@ class Amity(object):
                     Amity.room_data[room_name] = [
                         room_name, room_type, new_room.capacity]
                     Amity.livingspace_allocations[room_name] = []
-                    cprint(room_name + ' ' + 'created successfully!','yellow')
+                    cprint(room_name + ' ' + 'created successfully!', 'yellow')
                 elif room_type == 'OFFICE':
                     new_room = Office(room_name)
                     Amity.all_rooms.append(room_name)
@@ -161,66 +161,91 @@ class Amity(object):
             if job_type == 'STAFF':
                 wants_accomodation = 'NO'
             elif job_type == 'FELLOW':
-                accomodation = employee_data[3]
-                if accomodation.upper() == 'Y':
-                    wants_accomodation = 'YES'
-                else:
+                if len(employee_data) <= 3:
                     wants_accomodation = 'NO'
+                elif len(employee_data) > 3:
+                    accomodation = employee_data[3]
+                    if accomodation.upper() == 'Y':
+                        wants_accomodation = 'YES'
+                    else:
+                        wants_accomodation = 'NO'
             Amity.add_person(person_name, job_type, wants_accomodation)
 
         return ('People Loaded Succesfully!')
 
     @staticmethod
     def print_allocations(file_name):
+
         if file_name:
             file = open(file_name, 'w')
-            file.write('%s\n' % 'LIVINGSPACE ALLOCATIONS')
+            if Amity.livingspace_allocations:
 
-            for room_name in Amity.livingspace_allocations:
-                file.write("%s\n" % room_name)
-                living_occupants = Amity.livingspace_allocations[room_name]
-                for person in living_occupants:
-                    file.write("%s\n" % person)
+                file.write('%s\n' % 'LIVINGSPACE ALLOCATIONS')
 
-            file.write('%s\n' % 'OFFICE ALLOCATIONS')
-            for room_name in Amity.office_allocations:
-                file.write("%s\n" % room_name)
-                office_occupants = Amity.office_allocations[room_name]
-                for person in office_occupants:
-                    file.write("%s\n" % person)
-            file.close()
-
+                for room_name in Amity.livingspace_allocations:
+                    file.write("%s\n" % room_name)
+                    living_occupants = Amity.livingspace_allocations[room_name]
+                    for person in living_occupants:
+                        file.write("%s\n" % person)
+            else:
+                cprint('Currently there are no living space allocations', 'yellow')
+            if Amity.office_allocations:
+                file.write('%s\n' % 'OFFICE ALLOCATIONS')
+                for room_name in Amity.office_allocations:
+                    file.write("%s\n" % room_name)
+                    office_occupants = Amity.office_allocations[room_name]
+                    for person in office_occupants:
+                        file.write("%s\n" % person)
+            else:
+                cprint('Currently there are no office allocations', 'yellow')
         else:
-            cprint('LIVINGSPACE ALLOCATIONS', 'yellow')
-            for room_name in Amity.livingspace_allocations:
-                living_occupants = Amity.livingspace_allocations[room_name]
-                cprint(room_name, 'magenta')
-                print ('-' * 50)
-                print (', '.join(living_occupants))
-            cprint('OFFICE ALLOCATIONS', 'yellow')
-            for room_name in Amity.office_allocations:
-                office_occupants = Amity.office_allocations[room_name]
-                cprint(room_name, 'magenta')
-                print ('-' * 50)
-                print (', '.join(office_occupants))
+            if Amity.livingspace_allocations:
+                cprint('LIVINGSPACE ALLOCATIONS', 'yellow')
+                for room_name in Amity.livingspace_allocations:
+                    living_occupants = Amity.livingspace_allocations[room_name]
+                    cprint('\n' + room_name, 'magenta')
+                    print ('-' * 50)
+                    print (', '.join(living_occupants))
+            else:
+                cprint('Currently there are no livingspace allocations', 'yellow')
+            if Amity.office_allocations:
+                cprint('OFFICE ALLOCATIONS', 'yellow')
+                for room_name in Amity.office_allocations:
+                    office_occupants = Amity.office_allocations[room_name]
+                    cprint('\n' + room_name, 'magenta')
+                    print ('-' * 50)
+                    print (', '.join(office_occupants))
+            else:
+                cprint('Currently there are no office allocations', 'yellow')
 
     @staticmethod
     def print_unallocated(file_name):
+
         if file_name:
             file = open(file_name, 'w')
-            file.write('%s\n' % 'UNALLOCATED LIVINGSPACE')
-            for person in Amity.unallocated_livingspace:
-                file.write("%s\n" % person)
-
-            file.write('%s\n' % 'UNALLOCATED OFFICE')
-            for person in Amity.unallocated_office:
-                file.write("%s\n" % person)
-            file.close
+            if Amity.unallocated_livingspace:
+                file.write('%s\n' % 'UNALLOCATED LIVINGSPACE')
+                for person in Amity.unallocated_livingspace:
+                    file.write("%s\n" % person)
+            else:
+                cprint('Currently there are no unallocated livingspace ', 'yellow')
+            if Amity.unallocated_office:
+                file.write('%s\n' % 'UNALLOCATED OFFICE')
+                for person in Amity.unallocated_office:
+                    file.write("%s\n" % person)
+            else:
+                cprint('Currently there are no unallocated offices', 'yellow')
         else:
-            cprint('UNALLOCATED LIVINGSPACE', 'magenta')
-            cprint(', '.join(Amity.unallocated_livingspace), 'white')
-            cprint('UNALLOCATED OFFICE', 'magenta')
-            cprint(', '.join(Amity.unallocated_office), 'white')
+            if Amity.unallocated_livingspace:
+                cprint('UNALLOCATED LIVINGSPACE', 'magenta')
+                cprint(', '.join(Amity.unallocated_livingspace), 'white')
+            else:
+                cprint('Currently there are no unallocated livingspace ', 'yellow')
+            if Amity.unallocated_office:
+                cprint('UNALLOCATED OFFICE', 'magenta')
+                cprint(', '.join(Amity.unallocated_office), 'white')
+            else:
+                cprint('Currently there are no unallocated office', 'yellow')
 
     @staticmethod
     def print_room(room_name):
@@ -232,7 +257,6 @@ class Amity(object):
                 cprint(room_name, 'magenta')
                 cprint('-' * 30, 'magenta')
                 cprint(', '.join(living_occupants), 'white')
-
             else:
                 office_occupants = Amity.office_allocations[room_name]
                 cprint(room_name, 'magenta')
@@ -243,7 +267,6 @@ class Amity(object):
     @staticmethod
     def save_state(db_name):
         # if os.path.exists(db_name):
-
         conn = sqlite3.connect(db_name)
         with conn:
             cursor = conn.cursor()
@@ -264,7 +287,6 @@ class Amity(object):
                 cursor.execute(
                     '''INSERT INTO PERSON (ID, NAME, JOB_TYPE, ACCOMODATION)
                     VALUES(?,?,?,?)''', (emp_id, name, job_type, accomodation))
-
             for room_name in Amity.room_data:
                 r_name = Amity.room_data[room_name][0]
                 room_type = Amity.room_data[room_name][1]
@@ -294,7 +316,22 @@ class Amity(object):
                 Amity.office_allocations[row[0]] = row[3].split(', ')
         for row in cursor.execute('SELECT * FROM PERSON'):
             Amity.person_data[row[0]] = [row[1], row[2], row[3]]
-        print (Amity.livingspace_allocations)
-        print (Amity.office_allocations)
-        print (Amity.person_data)
+        cprint('LIVINGSPACE ALLOCATIONS', 'yellow')
+        for room_name in Amity.livingspace_allocations:
+            living_occupants = Amity.livingspace_allocations[room_name]
+            cprint('\n' + room_name, 'magenta')
+            print ('-' * 50)
+            print (', '.join(living_occupants))
+        cprint('OFFICE ALLOCATIONS', 'yellow')
+        for room_name in Amity.office_allocations:
+            office_occupants = Amity.office_allocations[room_name]
+            cprint('\n' + room_name, 'magenta')
+            print ('-' * 50)
+            print (', '.join(office_occupants))
+        cprint('Fellows and Staff', 'magenta')
+        for person_id in Amity.person_data:
+            p_data = Amity.person_data[person_id]
+            cprint('\n' + person_id, 'yellow')
+            print ('-' * 50)
+            print (', '.join(p_data))
         return('Data has been loaded into the system successfully')
